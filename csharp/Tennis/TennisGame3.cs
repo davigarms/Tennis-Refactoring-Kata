@@ -19,15 +19,28 @@ namespace Tennis
             if (GameNotWonOrReachedDeuce())
             {
                 var player1ScoreName = ScoreNames[_player1Score];
-                return ScoreIsTied() 
-                    ? player1ScoreName + "-All" 
-                    : player1ScoreName + "-" + ScoreNames[_player2Score];
+                if (ScoreIsTied())
+                {
+                    return player1ScoreName + "-All";
+                }
+
+                return player1ScoreName + "-" + ScoreNames[_player2Score];
             }
 
             if (_player1Score == _player2Score)
+            {
                 return "Deuce";
+            }
+
+            var playerHasAdvantage = (_player1Score - _player2Score) * (_player1Score - _player2Score) == 1;
             var winningPlayer = _player1Score > _player2Score ? _player1Name : _player2Name;
-            return (_player1Score - _player2Score) * (_player1Score - _player2Score) == 1 ? "Advantage " + winningPlayer : "Win for " + winningPlayer;
+
+            if (playerHasAdvantage)
+            {
+                return "Advantage " + winningPlayer;
+            }
+
+            return "Win for " + winningPlayer;
         }
 
         private bool GameNotWonOrReachedDeuce()
